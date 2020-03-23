@@ -140,7 +140,7 @@ public class Lane extends Thread implements PinsetterObserver {
 	private Party party;
 	private Pinsetter setter;
 	private HashMap scores;
-	private Vector subscribers;
+	private Vector<LaneObserver> subscribers;
 
 	private boolean gameIsHalted;
 
@@ -172,7 +172,7 @@ public class Lane extends Thread implements PinsetterObserver {
 	public Lane() {
 		setter = new Pinsetter();
 		scores = new HashMap();
-		subscribers = new Vector();
+		subscribers = new Vector<LaneObserver>();
 
 		gameIsHalted = false;
 		partyAssigned = false;
@@ -252,7 +252,7 @@ public class Lane extends Thread implements PinsetterObserver {
 					resetBowlerIterator();
 
 				} else if (result == 2) {// no, dont want to play another game
-					Vector printVector;
+					Vector<String> printVector;
 					EndGameReport egr = new EndGameReport(
 							((Bowler) party.getMembers().get(0)).getNickName() + "'s Party", party);
 					printVector = egr.getResult();
@@ -268,9 +268,9 @@ public class Lane extends Thread implements PinsetterObserver {
 						Bowler thisBowler = (Bowler) scoreIt.next();
 						ScoreReport sr = new ScoreReport(thisBowler, finalScores[myIndex++], gameNumber);
 						sr.sendEmail(thisBowler.getEmail());
-						Iterator printIt = printVector.iterator();
+						Iterator<String> printIt = printVector.iterator();
 						while (printIt.hasNext()) {
-							if (thisBowler.getNickName() == (String) printIt.next()) {
+							if (thisBowler.getNickName() == printIt.next()) {
 								System.out.println("Printing " + thisBowler.getNickName());
 								sr.sendPrintout();
 							}
@@ -599,10 +599,9 @@ public class Lane extends Thread implements PinsetterObserver {
 
 	public void publish(LaneEvent event) {
 		if (subscribers.size() > 0) {
-			Iterator eventIterator = subscribers.iterator();
 
-			while (eventIterator.hasNext()) {
-				((LaneObserver) eventIterator.next()).receiveLaneEvent(event);
+			for (LaneObserver subscriber : subscribers) {
+				subscriber.receiveLaneEvent(event);
 			}
 		}
 	}
