@@ -8,9 +8,9 @@
  * 
  */
 
-/**
- * Class that represents control desk event
- *
+/*
+  Class that represents control desk event
+
  */
 
 import java.util.*;
@@ -40,7 +40,7 @@ public class ControlDeskEvent {
      */
 
 	public Vector getPartyQueue() {
-		return partyQueue;
+		return (Vector) partyQueue.clone();
 	}
 
 }

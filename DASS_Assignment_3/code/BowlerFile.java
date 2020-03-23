@@ -14,9 +14,9 @@
  * 
  */
 
-/**
- * Class for interfacing with Bowler database
- *
+/*
+  Class for interfacing with Bowler database
+
  */
 
 import java.util.*;
@@ -37,11 +37,11 @@ class BowlerFile {
      */
 
 	public static Bowler getBowlerInfo(String nickName)
-		throws IOException, FileNotFoundException {
+		throws IOException {
 
 		BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
-		String data;
-		while ((data = in.readLine()) != null) {
+		String data = in.readLine();
+		while (data != null) {
 			// File format is nick\tfname\te-mail
 			String[] bowler = data.split("\t");
 			if (nickName.equals(bowler[0])) {
@@ -54,6 +54,7 @@ class BowlerFile {
 						+ bowler[2]);
 				return (new Bowler(bowler[0], bowler[1], bowler[2]));
 			}
+			data = in.readLine();
 		}
 		System.out.println("Nick not found...");
 		return null;
@@ -72,7 +73,7 @@ class BowlerFile {
 		String nickName,
 		String fullName,
 		String email)
-		throws IOException, FileNotFoundException {
+		throws IOException {
 
 		String data = nickName + "\t" + fullName + "\t" + email + "\n";
 
@@ -89,18 +90,19 @@ class BowlerFile {
      * 
      */
 
-	public static Vector getBowlers()
-		throws IOException, FileNotFoundException {
+	public static Vector<String> getBowlers()
+		throws IOException {
 
-		Vector allBowlers = new Vector();
+		Vector<String> allBowlers = new Vector<>();
 
 		BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
-		String data;
-		while ((data = in.readLine()) != null) {
+		String data = in.readLine();
+		while (data != null) {
 			// File format is nick\tfname\te-mail
 			String[] bowler = data.split("\t");
 			//"Nick: bowler[0] Full: bowler[1] email: bowler[2]
 			allBowlers.add(bowler[0]);
+			data = in.readLine();
 		}
 		return allBowlers;
 	}

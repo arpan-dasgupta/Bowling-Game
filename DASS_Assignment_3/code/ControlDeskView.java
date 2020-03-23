@@ -8,24 +8,27 @@
  * 
  */
 
-/**
- * Class for representation of the control desk
- *
+/*
+  Class for representation of the control desk
+
  */
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-
-import java.util.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Vector;
 
 public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
 	private JButton addParty, finished, assign;
 	private JFrame win;
-	private JList partyList;
+	private JList<?> partyList;
 	
 	/** The maximum  number of members in a party */
 	private int maxMembers;
@@ -81,16 +84,17 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		laneStatusPanel.setLayout(new GridLayout(numLanes, 1));
 		laneStatusPanel.setBorder(new TitledBorder("Lane Status"));
 
-		HashSet lanes=controlDesk.getLanes();
-		Iterator it = lanes.iterator();
+		HashSet<? extends Lane> lanes=controlDesk.getLanes();
+		Iterator<? extends Lane> it = lanes.iterator();
 		int laneCount=0;
 		while (it.hasNext()) {
-			Lane curLane = (Lane) it.next();
+			Lane curLane = it.next();
 			LaneStatusView laneStat = new LaneStatusView(curLane,(laneCount+1));
 			curLane.subscribe(laneStat);
-			((Pinsetter)curLane.getPinsetter()).subscribe(laneStat);
+			curLane.getPinsetter().subscribe(laneStat);
 			JPanel lanePanel = laneStat.showLane();
-			lanePanel.setBorder(new TitledBorder("Lane" + ++laneCount ));
+			++laneCount;
+			lanePanel.setBorder(new TitledBorder("Lane" + laneCount));
 			laneStatusPanel.add(lanePanel);
 		}
 
@@ -99,10 +103,10 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		partyPanel.setLayout(new FlowLayout());
 		partyPanel.setBorder(new TitledBorder("Party Queue"));
 
-		Vector empty = new Vector();
+		Vector<String> empty = new Vector<>();
 		empty.add("(Empty)");
 
-		partyList = new JList(empty);
+		partyList = new JList<Object>(empty);
 		partyList.setFixedCellWidth(120);
 		partyList.setVisibleRowCount(10);
 		JScrollPane partyPane = new JScrollPane(partyList);
@@ -132,7 +136,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		win.setLocation(
 			((screenSize.width) / 2) - ((win.getSize().width) / 2),
 			((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.show();
+		win.setVisible(true);
 
 	}
 
@@ -145,13 +149,13 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(addParty)) {
-			AddPartyView addPartyWin = new AddPartyView(this, maxMembers);
+			new AddPartyView(this, maxMembers);
 		}
 		if (e.getSource().equals(assign)) {
 			controlDesk.assignLane();
 		}
 		if (e.getSource().equals(finished)) {
-			win.hide();
+			win.setVisible(false);
 			System.exit(0);
 		}
 	}
@@ -175,6 +179,6 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 	 */
 
 	public void receiveControlDeskEvent(ControlDeskEvent ce) {
-		partyList.setListData(((Vector) ce.getPartyQueue()));
+		partyList.setListData(ce.getPartyQueue());
 	}
 }
