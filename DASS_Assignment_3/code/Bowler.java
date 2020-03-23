@@ -18,51 +18,38 @@
  */
 
 /**
- *  Class that holds all bowler info
+ * Class that holds all bowler info
  *
  */
 
 public class Bowler {
 
-    private String fullName;
-    private String nickName;
-    private String email;
+	private String fullName;
+	private String nickName;
+	private String email;
 
-    public Bowler( String nick, String full, String mail ) {
-	nickName = nick;
-	fullName = full;
-  	email = mail;
-    }
-
-
-    public String getNickName() {
-
-        return nickName;  
-
-    }
-
-	public String getFullName ( ) {
-			return fullName;
+	public Bowler(String nick, String full, String mail) {
+		fullName = full;
+		email = mail;
+		nickName = nick;
 	}
-	
-	public String getNick ( ) {
+
+	public String getNickName() {
 		return nickName;
 	}
 
-	public String getEmail ( ) {
-		return email;	
+	public String getFullName() {
+		return fullName;
 	}
-	
-	public boolean equals ( Bowler b) {
+
+	public String getEmail() {
+		return email;
+	}
+
+	public boolean equals(Bowler b) {
 		boolean retval = true;
-		if ( !(nickName.equals(b.getNickName())) ) {
-				retval = false;
-		}
-		if ( !(fullName.equals(b.getFullName())) ) {
-				retval = false;
-		}	
-		if ( !(email.equals(b.getEmail())) ) {
-				retval = false;
+		if (!(nickName.equals(b.getNickName())) || !(fullName.equals(b.getFullName())) || !(email.equals(b.getEmail()))) {
+			retval = false;
 		}
 		return retval;
 	}

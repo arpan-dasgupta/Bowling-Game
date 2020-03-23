@@ -42,7 +42,7 @@ public class NewPatronView implements ActionListener {
 
 	public NewPatronView(AddPartyView v) {
 
-		addParty=v;	
+		addParty = v;
 		done = false;
 
 		win = new JFrame("Add Patron");
@@ -113,9 +113,8 @@ public class NewPatronView implements ActionListener {
 
 		// Center Window on Screen
 		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-		win.setLocation(
-			((screenSize.width) / 2) - ((win.getSize().width) / 2),
-			((screenSize.height) / 2) - ((win.getSize().height) / 2));
+		win.setLocation(((screenSize.width) / 2) - ((win.getSize().width) / 2),
+				((screenSize.height) / 2) - ((win.getSize().height) / 2));
 		win.show();
 
 	}
@@ -131,7 +130,7 @@ public class NewPatronView implements ActionListener {
 			full = fullField.getText();
 			email = emailField.getText();
 			done = true;
-			addParty.updateNewPatron( this );
+			addParty.updateNewPatron(this);
 			win.hide();
 		}
 
@@ -141,7 +140,7 @@ public class NewPatronView implements ActionListener {
 		return done;
 	}
 
-	public String getNick() {
+	public String getNickName() {
 		return nick;
 	}
 

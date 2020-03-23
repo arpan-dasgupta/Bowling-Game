@@ -25,32 +25,32 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 
 	private String selectedMember;
 
-	public EndGameReport( String partyName, Party party ) {
-	
-		result =0;
+	public EndGameReport(String partyName, Party party) {
+
+		result = 0;
 		retVal = new Vector<>();
-		win = new JFrame("End Game Report for " + partyName + "?" );
+		win = new JFrame("End Game Report for " + partyName + "?");
 		win.getContentPane().setLayout(new BorderLayout());
 		((JPanel) win.getContentPane()).setOpaque(false);
 
 		JPanel colPanel = new JPanel();
-		colPanel.setLayout(new GridLayout( 1, 2 ));
+		colPanel.setLayout(new GridLayout(1, 2));
 
 		// Member Panel
 		JPanel partyPanel = new JPanel();
 		partyPanel.setLayout(new FlowLayout());
 		partyPanel.setBorder(new TitledBorder("Party Members"));
-		
+
 		Vector<String> myVector = new Vector<>();
 		for (Object o : party.getMembers()) {
-			myVector.add(((Bowler) o).getNick());
+			myVector.add(((Bowler) o).getNickName());
 		}
 		JList<String> memberList = new JList<>(myVector);
 		memberList.setFixedCellWidth(120);
 		memberList.setVisibleRowCount(5);
 		memberList.addListSelectionListener(this);
 		JScrollPane partyPane = new JScrollPane(memberList);
-		//        partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		// partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		partyPanel.add(partyPane);
 
 		partyPanel.add(memberList);
@@ -86,19 +86,18 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 
 		// Center Window on Screen
 		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-		win.setLocation(
-			((screenSize.width) / 2) - ((win.getSize().width) / 2),
-			((screenSize.height) / 2) - ((win.getSize().height) / 2));
+		win.setLocation(((screenSize.width) / 2) - ((win.getSize().width) / 2),
+				((screenSize.height) / 2) - ((win.getSize().height) / 2));
 		win.show();
 
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(printButton)) {		
-			//Add selected to the vector.
+		if (e.getSource().equals(printButton)) {
+			// Add selected to the vector.
 			retVal.add(selectedMember);
 		}
-		if (e.getSource().equals(finished)) {		
+		if (e.getSource().equals(finished)) {
 			win.hide();
 			result = 1;
 		}
@@ -106,34 +105,32 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 	}
 
 	public void valueChanged(ListSelectionEvent e) {
-		selectedMember =
-			((String) ((JList) e.getSource()).getSelectedValue());
+		selectedMember = ((String) ((JList) e.getSource()).getSelectedValue());
 	}
 
 	public Vector<String> getResult() {
-		while ( result == 0 ) {
+		while (result == 0) {
 			try {
 				Thread.sleep(10);
-			} catch ( InterruptedException e ) {
-				System.err.println( "Interrupted" );
+			} catch (InterruptedException e) {
+				System.err.println("Interrupted");
 			}
 		}
-		return retVal;	
+		return retVal;
 	}
-	
+
 	public void destroy() {
 		win.hide();
 	}
 
-	public static void main( String args[] ) {
+	public static void main(String args[]) {
 		Vector<Bowler> bowlers = new Vector<>();
-		for ( int i=0; i<4; i++ ) {
-			bowlers.add( new Bowler( "aaaaa", "aaaaa", "aaaaa" ) );
+		for (int i = 0; i < 4; i++) {
+			bowlers.add(new Bowler("aaaaa", "aaaaa", "aaaaa"));
 		}
-		Party party = new Party( bowlers );
-		String partyName="wank";
-		EndGameReport e = new EndGameReport( partyName, party );
+		Party party = new Party(bowlers);
+		String partyName = "wank";
+		EndGameReport e = new EndGameReport(partyName, party);
 	}
-	
-}
 
+}

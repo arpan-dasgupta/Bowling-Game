@@ -1,9 +1,9 @@
+
 /**
  * 
- * SMTP implementation based on code by Réal Gagnon mailto:real@rgagnon.com
+ * SMTP implementation based on code by Rï¿½al Gagnon mailto:real@rgagnon.com
  * 
  */
-
 
 import java.io.*;
 import java.util.Vector;
@@ -15,17 +15,19 @@ import java.awt.print.*;
 public class ScoreReport {
 
 	private String content;
-	
-	public ScoreReport( Bowler bowler, int[] scores, int games ) {
-		String nick = bowler.getNick();
+
+	public ScoreReport(Bowler bowler, int[] scores, int games) {
+		String nick = bowler.getNickName();
 		String full = bowler.getFullName();
 		Vector v = null;
-		try{
+		try {
 			v = ScoreHistoryFile.getScores(nick);
-		} catch (Exception e){System.err.println("Error: " + e);}
-		
+		} catch (Exception e) {
+			System.err.println("Error: " + e);
+		}
+
 		Iterator scoreIt = v.iterator();
-		
+
 		content = "";
 		content += "--Lucky Strike Bowling Alley Score Report--\n";
 		content += "\n";
@@ -33,16 +35,16 @@ public class ScoreReport {
 		content += "\n";
 		content += "Final scores for this session: ";
 		content += scores[0];
-		for (int i = 1; i < games; i++){
+		for (int i = 1; i < games; i++) {
 			content += ", " + scores[i];
 		}
 		content += ".\n";
 		content += "\n";
 		content += "\n";
 		content += "Previous scores by date: \n";
-		while (scoreIt.hasNext()){
+		while (scoreIt.hasNext()) {
 			Score score = (Score) scoreIt.next();
-			content += "  " + score.getDate() + " - " +  score.getScore();
+			content += "  " + score.getDate() + " - " + score.getScore();
 			content += "\n";
 		}
 		content += "\n\n";
@@ -53,12 +55,8 @@ public class ScoreReport {
 	public void sendEmail(String recipient) {
 		try {
 			Socket s = new Socket("osfmail.rit.edu", 25);
-			BufferedReader in =
-				new BufferedReader(
-					new InputStreamReader(s.getInputStream(), "8859_1"));
-			BufferedWriter out =
-				new BufferedWriter(
-					new OutputStreamWriter(s.getOutputStream(), "8859_1"));
+			BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), "8859_1"));
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "8859_1"));
 
 			String boundary = "DataSeparatorString";
 
@@ -120,6 +118,5 @@ public class ScoreReport {
 			e.printStackTrace();
 		}
 	}
-
 
 }
