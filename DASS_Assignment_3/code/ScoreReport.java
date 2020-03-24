@@ -1,16 +1,18 @@
+/*
 
-/**
- * 
- * SMTP implementation based on code by R�al Gagnon mailto:real@rgagnon.com
- * 
+  SMTP implementation based on code by R�al Gagnon mailto:real@rgagnon.com
+
  */
 
-import java.io.*;
-import java.util.Vector;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.util.Iterator;
-import java.net.*;
-import java.awt.*;
-import java.awt.print.*;
+import java.util.Vector;
 
 public class ScoreReport {
 
@@ -26,6 +28,7 @@ public class ScoreReport {
 			System.err.println("Error: " + e);
 		}
 
+		assert v != null;
 		Iterator scoreIt = v.iterator();
 
 		content = "";
@@ -57,8 +60,6 @@ public class ScoreReport {
 			Socket s = new Socket("osfmail.rit.edu", 25);
 			BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), "8859_1"));
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "8859_1"));
-
-			String boundary = "DataSeparatorString";
 
 			// here you are supposed to send your username
 			sendln(in, out, "HELO world");
@@ -102,7 +103,7 @@ public class ScoreReport {
 			out.write(s + "\r\n");
 			out.flush();
 			// System.out.println(s);
-			s = in.readLine();
+			in.readLine();
 			// System.out.println(s);
 		} catch (Exception e) {
 			e.printStackTrace();

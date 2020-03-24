@@ -8,21 +8,15 @@
  *   $Log$
  */
 
-/**
- *  constructs a prototype PinSetter GUI
- *
- */
-
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
 import java.util.Vector;
 
 
 public class PinSetterView implements PinsetterObserver {
 
 
-    private Vector pinVect = new Vector ( );
+    private Vector<JLabel> pinVect = new Vector<>( );
     private JPanel firstRoll;
     private JPanel secondRoll;
 
@@ -180,17 +174,17 @@ public class PinSetterView implements PinsetterObserver {
      * is grayed out.  When it is the second roll, it is indicated by the
      * appearance of a second yellow box at the top.
      *
-     * @param e    The state of the pinsetter is sent in this event.
+     * @param pe    The state of the pinsetter is sent in this event.
      */
     
 
     public void receivePinsetterEvent(PinsetterEvent pe){
 	if ( !(pe.isFoulCommited()) ) {
-	    	JLabel tempPin = new JLabel ( );
-	    	for ( int c = 0; c < 10; c++ ) {
+		new JLabel();
+		for ( int c = 0; c < 10; c++ ) {
 				boolean pin = pe.pinKnockedDown ( c );
-				tempPin = (JLabel)pinVect.get ( c );
-				if ( pin ) {
+			JLabel tempPin = pinVect.get(c);
+			if ( pin ) {
 		    		tempPin.setForeground ( Color.lightGray );
 				}
 	    	}
@@ -200,22 +194,22 @@ public class PinSetterView implements PinsetterObserver {
 		}
 	if ( pe.pinsDownOnThisThrow() == -1) {
 		for ( int i = 0; i != 10; i++){
-			((JLabel)pinVect.get(i)).setForeground(Color.black);
+			(pinVect.get(i)).setForeground(Color.black);
 		}
 		secondRoll.setBackground( Color.black);
 	}
     }
     
     public void show() {
-    	frame.show();
+    	frame.setVisible(true);
     }
 
     public void hide() {
-    	frame.hide();
+    	frame.setVisible(false);
     }
     
-    public static void main ( String args [ ] ) {
-		PinSetterView pg = new PinSetterView ( 1 );
+    public static void main (String[] args) {
+		new PinSetterView(1);
     }
     
 }

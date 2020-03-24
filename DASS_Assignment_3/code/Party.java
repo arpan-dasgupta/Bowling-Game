@@ -17,9 +17,9 @@
  *
  */
 
-/**
- *  Container that holds bowlers
- *
+/*
+   Container that holds bowlers
+
  */
 
 import java.util.*;
@@ -46,7 +46,7 @@ public class Party {
 	 */
 
     public Vector getMembers() {
-		return myBowlers;
+		return (Vector) myBowlers.clone();
     }
 
 }

@@ -11,21 +11,21 @@
 import java.util.Vector;
  
 public class Queue {
-	private Vector v;
+	private Vector<Party> v;
 	
 	/** Queue()
 	 * 
 	 * creates a new queue
 	 */
 	public Queue() {
-		v = new Vector();
+		v = new Vector<>();
 	}
 	
-	public Object next() {
+	public Party next() {
 		return v.remove(0);
 	}
 
-	public void add(Object o) {
+	public void add(Party o) {
 		v.addElement(o);
 	}
 	
@@ -33,8 +33,8 @@ public class Queue {
 		return v.size() != 0;
 	}
 
-	public Vector asVector() {
-		return v;
+	public Vector<Party> asVector() {
+		return (Vector<Party>) v.clone();
 	}
 	
 }
