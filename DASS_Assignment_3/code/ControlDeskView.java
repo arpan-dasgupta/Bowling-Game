@@ -13,6 +13,8 @@
 
  */
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -52,7 +54,82 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
 		JPanel colPanel = new JPanel();
 		colPanel.setLayout(new BorderLayout());
+		JPanel controlsPanel = controlPanel();
 
+		JPanel laneStatusPanel = laneStatusPanel(controlDesk, numLanes);
+
+		// Party Queue Panel
+		JPanel partyPanel = partyPanel();
+
+		cleanMainPanel(colPanel, controlsPanel, laneStatusPanel, partyPanel);
+
+		win.getContentPane().add("Center", colPanel);
+
+		win.pack();
+
+		/* Close program when this window closes */
+		win.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+
+		// Center Window on Screen
+		centraliseWindow();
+
+	}
+
+	private void centraliseWindow() {
+		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
+		int screenWidth = winWidth(screenSize);
+		int screenHeight = (screenSize.height) / 2;
+//		int winHeight = (win.getSize().height) / 2;
+		win.setLocation(
+			screenWidth - winWidth(win.getSize()),
+			screenHeight - winHeight(win.getSize()));
+		win.setVisible(true);
+	}
+
+	private int winWidth(Dimension size) {
+		return (size.width) / 2;
+	}
+
+	private int winHeight(Dimension size) {
+		return (size.height) / 2;
+	}
+
+	private void cleanMainPanel(JPanel colPanel, JPanel controlsPanel, JPanel laneStatusPanel, JPanel partyPanel) {
+		// Clean up main panel
+		colPanel.add(controlsPanel, "East");
+		colPanel.add(laneStatusPanel, "Center");
+		colPanel.add(partyPanel, "West");
+	}
+
+	@NotNull
+	private JPanel laneStatusPanel(ControlDesk controlDesk, int numLanes) {
+		// Lane Status Panel
+		JPanel laneStatusPanel = new JPanel();
+		laneStatusPanel.setLayout(new GridLayout(numLanes, 1));
+		laneStatusPanel.setBorder(new TitledBorder("Lane Status"));
+
+		HashSet<? extends Lane> lanes=controlDesk.getLanes();
+		Iterator<? extends Lane> it = lanes.iterator();
+		int laneCount=0;
+		while (it.hasNext()) {
+			Lane curLane = it.next();
+			LaneStatusView laneStat = new LaneStatusView(curLane,(laneCount+1));
+			curLane.subscribe(laneStat);
+			curLane.getPinsetter().subscribe(laneStat);
+			JPanel lanePanel = laneStat.showLane();
+			++laneCount;
+			lanePanel.setBorder(new TitledBorder("Lane" + laneCount));
+			laneStatusPanel.add(lanePanel);
+		}
+		return laneStatusPanel;
+	}
+
+	@NotNull
+	private JPanel controlPanel() {
 		// Controls Panel
 		JPanel controlsPanel = new JPanel();
 		controlsPanel.setLayout(new GridLayout(3, 1));
@@ -78,27 +155,11 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		finished.addActionListener(this);
 		finishedPanel.add(finished);
 		controlsPanel.add(finishedPanel);
+		return controlsPanel;
+	}
 
-		// Lane Status Panel
-		JPanel laneStatusPanel = new JPanel();
-		laneStatusPanel.setLayout(new GridLayout(numLanes, 1));
-		laneStatusPanel.setBorder(new TitledBorder("Lane Status"));
-
-		HashSet<? extends Lane> lanes=controlDesk.getLanes();
-		Iterator<? extends Lane> it = lanes.iterator();
-		int laneCount=0;
-		while (it.hasNext()) {
-			Lane curLane = it.next();
-			LaneStatusView laneStat = new LaneStatusView(curLane,(laneCount+1));
-			curLane.subscribe(laneStat);
-			curLane.getPinsetter().subscribe(laneStat);
-			JPanel lanePanel = laneStat.showLane();
-			++laneCount;
-			lanePanel.setBorder(new TitledBorder("Lane" + laneCount));
-			laneStatusPanel.add(lanePanel);
-		}
-
-		// Party Queue Panel
+	@NotNull
+	private JPanel partyPanel() {
 		JPanel partyPanel = new JPanel();
 		partyPanel.setLayout(new FlowLayout());
 		partyPanel.setBorder(new TitledBorder("Party Queue"));
@@ -114,30 +175,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 			JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		partyPanel.add(partyPane);
 		//		partyPanel.add(partyList);
-
-		// Clean up main panel
-		colPanel.add(controlsPanel, "East");
-		colPanel.add(laneStatusPanel, "Center");
-		colPanel.add(partyPanel, "West");
-
-		win.getContentPane().add("Center", colPanel);
-
-		win.pack();
-
-		/* Close program when this window closes */
-		win.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-
-		// Center Window on Screen
-		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-		win.setLocation(
-			((screenSize.width) / 2) - ((win.getSize().width) / 2),
-			((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.setVisible(true);
-
+		return partyPanel;
 	}
 
 	/**

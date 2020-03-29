@@ -46,7 +46,7 @@ public class LaneEvent {
 		score = theScore;
 		curScores = theCurScores;
 		frameNum = theFrameNum;
-		ball = theBall;	
+		ball = theBall;
 		mechProb = mechProblem;
 	}
 	
