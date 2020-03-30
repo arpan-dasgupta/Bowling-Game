@@ -68,15 +68,12 @@ class ControlDesk extends Thread {
 		this.numLanes = numLanes;
 		lanes = new HashSet<>(numLanes);
 		partyQueue = new Queue();
-
 		subscribers = new Vector<>();
 
 		for (int i = 0; i < numLanes; i++) {
 			lanes.add(new Lane());
 		}
-		
 		this.start();
-
 	}
 	
 	/**
@@ -85,9 +82,7 @@ class ControlDesk extends Thread {
 	 */
 	public void run() {
 		while (true) {
-			
 			assignLane();
-			
 			try {
 				sleep(250);
 			} catch (Exception ignored) {}
@@ -106,10 +101,8 @@ class ControlDesk extends Thread {
 
 	private Bowler registerPatron(String nickName) {
 		Bowler patron = null;
-
 		try {
 			// only one patron / nick.... no dupes, no checks
-
 			patron = BowlerFile.getBowlerInfo(nickName);
 
 		} catch (IOException e) {

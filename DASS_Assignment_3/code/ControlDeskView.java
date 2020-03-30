@@ -82,7 +82,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 	private void centraliseWindow() {
 		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
 		int screenWidth = winWidth(screenSize);
-		int screenHeight = (screenSize.height) / 2;
+		int screenHeight = winHeight(screenSize);
 //		int winHeight = (win.getSize().height) / 2;
 		win.setLocation(
 			screenWidth - winWidth(win.getSize()),
@@ -141,13 +141,6 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		addParty.addActionListener(this);
 		addPartyPanel.add(addParty);
 		controlsPanel.add(addPartyPanel);
-
-		assign = new JButton("Assign Lanes");
-		JPanel assignPanel = new JPanel();
-		assignPanel.setLayout(new FlowLayout());
-		assign.addActionListener(this);
-		assignPanel.add(assign);
-//		controlsPanel.add(assignPanel);
 
 		finished = new JButton("Finished");
 		JPanel finishedPanel = new JPanel();

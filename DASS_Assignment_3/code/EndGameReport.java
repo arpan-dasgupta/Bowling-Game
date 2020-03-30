@@ -6,6 +6,8 @@
   Window>Preferences>Java>Code Generation.
  */
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -37,23 +39,7 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		colPanel.setLayout(new GridLayout(1, 2));
 
 		// Member Panel
-		JPanel partyPanel = new JPanel();
-		partyPanel.setLayout(new FlowLayout());
-		partyPanel.setBorder(new TitledBorder("Party Members"));
-
-		Vector<String> myVector = new Vector<>();
-		for (Object o : party.getMembers()) {
-			myVector.add(((Bowler) o).getNickName());
-		}
-		JList<String> memberList = new JList<>(myVector);
-		memberList.setFixedCellWidth(120);
-		memberList.setVisibleRowCount(5);
-		memberList.addListSelectionListener(this);
-		JScrollPane partyPane = new JScrollPane(memberList);
-		// partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		partyPanel.add(partyPane);
-
-		partyPanel.add(memberList);
+		JPanel partyPanel = memberPanel(party);
 
 		// Button Panel
 		// Button Panel
@@ -83,13 +69,49 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		win.getContentPane().add("Center", colPanel);
 
 		win.pack();
+		centerWindow();
 
-		// Center Window on Screen
+	}
+
+	private void centerWindow() {
 		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-		win.setLocation(((screenSize.width) / 2) - ((win.getSize().width) / 2),
-				((screenSize.height) / 2) - ((win.getSize().height) / 2));
+		int screenWidth = winWidth(screenSize);
+		int screenHeight = winHeight(screenSize);
+//		int winHeight = (win.getSize().height) / 2;
+		win.setLocation(
+				screenWidth - winWidth(win.getSize()),
+				screenHeight - winHeight(win.getSize()));
 		win.setVisible(true);
+	}
 
+	private int winWidth(Dimension size) {
+		return (size.width) / 2;
+	}
+
+	private int winHeight(Dimension size) {
+		return (size.height) / 2;
+	}
+
+	@NotNull
+	private JPanel memberPanel(Party party) {
+		JPanel partyPanel = new JPanel();
+		partyPanel.setLayout(new FlowLayout());
+		partyPanel.setBorder(new TitledBorder("Party Members"));
+
+		Vector<String> myVector = new Vector<>();
+		for (Object o : party.getMembers()) {
+			myVector.add(((Bowler) o).getNickName());
+		}
+		JList<String> memberList = new JList<>(myVector);
+		memberList.setFixedCellWidth(120);
+		memberList.setVisibleRowCount(5);
+		memberList.addListSelectionListener(this);
+		JScrollPane partyPane = new JScrollPane(memberList);
+		// partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		partyPanel.add(partyPane);
+
+		partyPanel.add(memberList);
+		return partyPanel;
 	}
 
 	public void actionPerformed(ActionEvent e) {

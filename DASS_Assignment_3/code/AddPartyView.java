@@ -25,6 +25,8 @@
  
  */
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -83,26 +85,7 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 		JScrollPane partyPane = new JScrollPane(partyList);
 		// partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		partyPanel.add(partyPane);
-
-		// Bowler Database
-		JPanel bowlerPanel = new JPanel();
-		bowlerPanel.setLayout(new FlowLayout());
-		bowlerPanel.setBorder(new TitledBorder("Bowler Database"));
-
-		try {
-			bowlerDB = new Vector<Object>(BowlerFile.getBowlers());
-		} catch (Exception e) {
-			System.err.println("File Error");
-			e.printStackTrace();
-			bowlerDB = new Vector<>();
-		}
-		allBowlers = new JList<>(bowlerDB);
-		allBowlers.setVisibleRowCount(8);
-		allBowlers.setFixedCellWidth(120);
-		JScrollPane bowlerPane = new JScrollPane(allBowlers);
-		bowlerPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		allBowlers.addListSelectionListener(this);
-		bowlerPanel.add(bowlerPane);
+		JPanel bowlerPanel = retrieveBowlerDatabase();
 
 		// Button Panel
 		JPanel buttonPanel = new JPanel();
@@ -147,15 +130,55 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 		win.getContentPane().add("Center", colPanel);
 
 		win.pack();
+		centerWindow();
 
-		// Center Window on Screen
-		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-		win.setLocation(((screenSize.width) / 2) - ((win.getSize().width) / 2),
-				((screenSize.height) / 2) - ((win.getSize().height) / 2));
 		// win.show();
 		win.setVisible(true);
 		// setVisible(true);
 
+	}
+
+	@NotNull
+	private JPanel retrieveBowlerDatabase() {
+		// Bowler Database
+		JPanel bowlerPanel = new JPanel();
+		bowlerPanel.setLayout(new FlowLayout());
+		bowlerPanel.setBorder(new TitledBorder("Bowler Database"));
+
+		try {
+			bowlerDB = new Vector<Object>(BowlerFile.getBowlers());
+		} catch (Exception e) {
+			System.err.println("File Error");
+			e.printStackTrace();
+			bowlerDB = new Vector<>();
+		}
+		allBowlers = new JList<>(bowlerDB);
+		allBowlers.setVisibleRowCount(8);
+		allBowlers.setFixedCellWidth(120);
+		JScrollPane bowlerPane = new JScrollPane(allBowlers);
+		bowlerPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		allBowlers.addListSelectionListener(this);
+		bowlerPanel.add(bowlerPane);
+		return bowlerPanel;
+	}
+
+	private void centerWindow() {
+		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
+		int screenWidth = winWidth(screenSize);
+		int screenHeight = winHeight(screenSize);
+//		int winHeight = (win.getSize().height) / 2;
+		win.setLocation(
+				screenWidth - winWidth(win.getSize()),
+				screenHeight - winHeight(win.getSize()));
+		win.setVisible(true);
+	}
+
+	private int winWidth(Dimension size) {
+		return (size.width) / 2;
+	}
+
+	private int winHeight(Dimension size) {
+		return (size.height) / 2;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -190,7 +213,14 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 	}
 
 	private void extractedOne(ActionEvent e) {
-		if (e.getSource().equals(addPatron) && selectedNick != null && party.size() < maxSize) {
+		boolean equals = e.getSource().equals(addPatron);
+		final boolean b = selectedNick != null;
+		final boolean b1 = party.size() < maxSize;
+		checkEquality(equals, b, b1);
+	}
+
+	private void checkEquality(boolean equals, boolean b, boolean b1) {
+		if (equals && b && b1) {
 			if (party.contains(selectedNick)) {
 				System.err.println("Member already in Party");
 			} else {

@@ -6,6 +6,8 @@
   Window>Preferences>Java>Code Generation.
  */
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -41,6 +43,42 @@ public class EndGamePrompt implements ActionListener {
 		labelPanel.add(message);
 
 		// Button Panel
+		JPanel buttonPanel = buttonjPanel();
+
+		// Clean up main panel
+		colPanel.add(labelPanel);
+		colPanel.add(buttonPanel);
+
+		win.getContentPane().add("Center", colPanel);
+
+		win.pack();
+
+		// Center Window on Screen
+		centerWindow();
+
+	}
+
+	private void centerWindow() {
+		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
+		int screenWidth = winWidth(screenSize);
+		int screenHeight = winHeight(screenSize);
+//		int winHeight = (win.getSize().height) / 2;
+		win.setLocation(
+				screenWidth - winWidth(win.getSize()),
+				screenHeight - winHeight(win.getSize()));
+		win.setVisible(true);
+	}
+
+	private int winWidth(Dimension size) {
+		return (size.width) / 2;
+	}
+
+	private int winHeight(Dimension size) {
+		return (size.height) / 2;
+	}
+
+	@NotNull
+	private JPanel buttonjPanel() {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2));
 
@@ -60,21 +98,7 @@ public class EndGamePrompt implements ActionListener {
 
 		buttonPanel.add(yesButton);
 		buttonPanel.add(noButton);
-
-		// Clean up main panel
-		colPanel.add(labelPanel);
-		colPanel.add(buttonPanel);
-
-		win.getContentPane().add("Center", colPanel);
-
-		win.pack();
-
-		// Center Window on Screen
-		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-		win.setLocation(((screenSize.width) / 2) - ((win.getSize().width) / 2),
-				((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.setVisible(true);
-
+		return buttonPanel;
 	}
 
 	public void actionPerformed(ActionEvent e) {

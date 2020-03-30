@@ -98,9 +98,7 @@ class BowlerFile {
 		BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
 		String data = in.readLine();
 		while (data != null) {
-			// File format is nick\tfname\te-mail
 			String[] bowler = data.split("\t");
-			//"Nick: bowler[0] Full: bowler[1] email: bowler[2]
 			allBowlers.add(bowler[0]);
 			data = in.readLine();
 		}
