@@ -27,17 +27,17 @@ import java.util.HashMap;
 
 public class LaneEvent {
 
-	private Party p;
-	private int frame;
-	private int ball;
-	private Bowler bowler;
-	private int[][] cumulScore;
-	private HashMap score;
-	private int index;
-	private int frameNum;
-	private boolean mechProb;
-	
-	public LaneEvent( Party pty, int theIndex, Bowler theBowler, int[][] theCumulScore, HashMap theScore, int theFrameNum, int[] theCurScores, int theBall, boolean mechProblem) {
+	private final Party p;
+	private final int ball;
+	private final Bowler bowler;
+	private final int[][] cumulScore;
+	private final HashMap score;
+	private final int index;
+	private final int frameNum;
+	private final boolean mechProb;
+
+	public LaneEvent(Party pty, int theIndex, Bowler theBowler, int[][] theCumulScore, HashMap theScore,
+			int theFrameNum, int[] theCurScores, int theBall, boolean mechProblem) {
 		p = pty;
 		index = theIndex;
 		bowler = theBowler;
@@ -47,47 +47,41 @@ public class LaneEvent {
 		ball = theBall;
 		mechProb = mechProblem;
 	}
-	
+
 	public boolean isMechanicalProblem() {
 		return mechProb;
 	}
-	
+
 	public int getFrameNum() {
 
 		return frameNum;
 	}
-	
-	public HashMap getScore( ) {
 
-		return (HashMap) score.clone();
+	public HashMap getScore() {
+
+		return score;
 	}
-
 
 	public int getIndex() {
 		return index;
 	}
 
-	public int getFrame( ) {
-		return frame;
-	}
-
-	public int getBall( ){
+	public int getBall() {
 		return ball;
 	}
-	
-	public int[][] getCumulScore(){
-		return (int[][]) cumulScore.clone();
+
+	public int[][] getCumulScore() {
+		return cumulScore;
 	}
 
 	public Party getParty() {
 
-		return (Party) p.clone();
+		return p;
 	}
-	
+
 	public Bowler getBowler() {
 
-		return (Bowler) bowler.clone();
+		return bowler;
 	}
 
 };
-
