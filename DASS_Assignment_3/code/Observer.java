@@ -1,5 +1,5 @@
 public interface Observer {
-    void receiveLaneEvent(LaneEvent le);
+    // void receiveLaneEvent(LaneEvent le);
 
     /**
      * recievePinsetterEvent()
