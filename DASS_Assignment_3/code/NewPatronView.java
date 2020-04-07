@@ -104,15 +104,9 @@ public class NewPatronView implements ActionListener {
 		colPanel.add(patronPanel, "Center");
 		colPanel.add(buttonPanel, "East");
 
-		win.getContentPane().add("Center", colPanel);
+		Drawer d = new Drawer();
+		d.windowPos(colPanel,win);
 
-		win.pack();
-
-		// Center Window on Screen
-		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-		win.setLocation(((screenSize.width) / 2) - ((win.getSize().width) / 2),
-				((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.setVisible(true);
 
 	}
 

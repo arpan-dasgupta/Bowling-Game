@@ -113,22 +113,26 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		colPanel.add(laneStatusPanel, "Center");
 		colPanel.add(partyPanel, "West");
 
-		win.getContentPane().add("Center", colPanel);
-
-		win.pack();
-
 		/* Close program when this window closes */
 		win.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
+//		win.getContentPane().add("Center", colPanel);
+//
+//		win.pack();
+//
+//
+//		// Center Window on Screen
+//		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
+//		win.setLocation(((screenSize.width) / 2) - ((win.getSize().width) / 2),
+//				((screenSize.height) / 2) - ((win.getSize().height) / 2));
+//		win.show();
 
-		// Center Window on Screen
-		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-		win.setLocation(((screenSize.width) / 2) - ((win.getSize().width) / 2),
-				((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.show();
+		Drawer d = new Drawer();
+		d.windowPos(colPanel,win);
+
 
 	}
 
