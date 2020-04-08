@@ -258,7 +258,7 @@ public class Lane extends Thread implements Observer {
 
 		curScores = new int[party.getMembers().size()];
 		cumulScores = new int[party.getMembers().size()][10];
-		finalScores = new int[party.getMembers().size()][128]; // Hardcoding a max of 128 games, bite me.
+		finalScores = new int[party.getMembers().size()][128];
 		gameNumber = 0;
 
 		resetScores();
@@ -491,6 +491,11 @@ public class Lane extends Thread implements Observer {
 	/**
 	 * Pause the execution of this game
 	 */
+
+	public boolean isGameIsHalted(){
+		return gameIsHalted;
+	}
+
 	public void pauseGame() {
 		gameIsHalted = true;
 		publish(lanePublish());
@@ -502,6 +507,12 @@ public class Lane extends Thread implements Observer {
 	public void unPauseGame() {
 		gameIsHalted = false;
 		publish(lanePublish());
+	}
+
+	public void save(){
+		gameIsHalted = true;
+		publish(lanePublish());
+		System.out.println("Ok I'll save");
 	}
 
 }

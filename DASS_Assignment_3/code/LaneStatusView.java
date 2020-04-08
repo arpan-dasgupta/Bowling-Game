@@ -19,6 +19,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, Observer {
 	private final JLabel pinsDown;
 	private final JButton viewLane;
 	private final JButton viewPinSetter, maintenance;
+	private final JButton pause, save;
 
 	private final PinSetterView psv;
 	private final LaneView lv;
@@ -77,12 +78,28 @@ public class LaneStatusView implements ActionListener, LaneObserver, Observer {
 		maintenance.addActionListener(this);
 		maintenancePanel.add(maintenance);
 
+		pause = new JButton("Pause/Resume");
+		final JPanel pausePanel = new JPanel();
+		pausePanel.setLayout(new FlowLayout());
+		pause.addActionListener(this);
+		pausePanel.add(pause);
+
+		save = new JButton("Save");
+		final JPanel savePanel = new JPanel();
+		savePanel.setLayout(new FlowLayout());
+		save.addActionListener(this);
+		savePanel.add(save);
+
 		viewLane.setEnabled(false);
 		viewPinSetter.setEnabled(false);
+		pause.setEnabled(false);
+		save.setEnabled(false);
 
 		buttonPanel.add(viewLanePanel);
 		buttonPanel.add(viewPinSetterPanel);
 		buttonPanel.add(maintenancePanel);
+		buttonPanel.add(pausePanel);
+		buttonPanel.add(savePanel);
 
 		jp.add(cLabel);
 		jp.add(curBowler);
@@ -114,8 +131,18 @@ public class LaneStatusView implements ActionListener, LaneObserver, Observer {
 		}
 		if (e.getSource().equals(maintenance)) {
 			if (lane.isPartyAssigned()) {
-				lane.unPauseGame();
-				maintenance.setBackground(Color.GREEN);
+					lane.unPauseGame();
+					maintenance.setBackground(Color.GREEN);
+			}
+		}
+		if(e.getSource().equals(pause)) {
+			if (lane.isPartyAssigned()) {
+				if(lane.isGameIsHalted()) lane.unPauseGame(); else lane.pauseGame();
+			}
+		}
+		if(e.getSource().equals(save)){
+			if(lane.isPartyAssigned()){
+				lane.save();
 			}
 		}
 	}
@@ -136,15 +163,22 @@ public class LaneStatusView implements ActionListener, LaneObserver, Observer {
 
 	public void receiveLaneEvent(final LaneEvent le) {
 		curBowler.setText(le.getBowler().getNickName());
-		if (le.isMechanicalProblem()) {
+		if (le.isMechanicalProblem() || lane.isGameIsHalted()) {
 			maintenance.setBackground(Color.RED);
+		}
+		else{
+			maintenance.setBackground(Color.GREEN);
 		}
 		if (!lane.isPartyAssigned()) {
 			viewLane.setEnabled(false);
 			viewPinSetter.setEnabled(false);
+			pause.setEnabled(false);
+			save.setEnabled(false);
 		} else {
 			viewLane.setEnabled(true);
 			viewPinSetter.setEnabled(true);
+			pause.setEnabled(true);
+			save.setEnabled(true);
 		}
 	}
 
