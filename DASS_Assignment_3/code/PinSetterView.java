@@ -10,9 +10,10 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Vector;
 
-public class PinSetterView implements Observer {
+public class PinSetterView implements Observer, Serializable {
 
 	private Vector<JLabel> pinVect = new Vector<>();
 	private JPanel firstRoll;
