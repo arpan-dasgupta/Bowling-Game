@@ -24,6 +24,7 @@ public class ScoreReport {
 		Vector v = null;
 		try {
 			v = ScoreHistoryFile.getScores(nick);
+			System.out.println("got it");
 		} catch (Exception e) {
 			System.err.println("Error: " + e);
 		}
@@ -52,6 +53,7 @@ public class ScoreReport {
 		}
 		content += "\n\n";
 		content += "Thank you for your continuing patronage.";
+		System.out.println(content);
 
 	}
 

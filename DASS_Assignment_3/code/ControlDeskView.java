@@ -15,13 +15,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
 
 public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
-	private JButton addParty, finished, assign;
+	private JButton addParty, finished, assign, scores;
 	private JFrame win;
 	private JList<?> partyList;
 
@@ -66,6 +67,13 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		assign.addActionListener(this);
 		assignPanel.add(assign);
 		// controlsPanel.add(assignPanel);
+
+		scores = new JButton("Scores");
+		JPanel scorePanel = new JPanel();
+		scorePanel.setLayout(new FlowLayout());
+		scores.addActionListener(this);
+		scorePanel.add(scores);
+		controlsPanel.add(scorePanel);
 
 		finished = new JButton("Finished");
 		JPanel finishedPanel = new JPanel();
@@ -153,6 +161,13 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		if (e.getSource().equals(finished)) {
 			win.setVisible(false);
 			System.exit(0);
+		}
+		if(e.getSource().equals(scores)){
+			try {
+				new ScoreQueryView();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 
