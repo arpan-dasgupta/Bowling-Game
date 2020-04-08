@@ -22,9 +22,10 @@
 
  */
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Party {
+public class Party implements Serializable {
 
 	/** Vector of bowlers in this party */	
     private Vector myBowlers;

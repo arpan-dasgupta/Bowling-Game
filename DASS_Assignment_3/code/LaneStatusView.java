@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class LaneStatusView implements ActionListener, LaneObserver, Observer {
 
@@ -142,7 +143,11 @@ public class LaneStatusView implements ActionListener, LaneObserver, Observer {
 		}
 		if(e.getSource().equals(save)){
 			if(lane.isPartyAssigned()){
-				lane.save();
+				try {
+					lane.save();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
 			}
 		}
 	}

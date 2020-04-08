@@ -1,10 +1,12 @@
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Vector;
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Date;
 
-public class Lane extends Thread implements Observer {
+public class Lane extends Thread implements Observer, Serializable {
 	private Party party;
 	private Pinsetter setter;
 	private HashMap scores;
@@ -16,6 +18,7 @@ public class Lane extends Thread implements Observer {
 	private boolean gameFinished;
 	private Iterator bowlerIterator;
 	private int ball;
+	private int count;
 	private int bowlIndex;
 	private int frameNumber;
 	private boolean tenthFrameStrike;
@@ -47,6 +50,7 @@ public class Lane extends Thread implements Observer {
 		partyAssigned = false;
 
 		gameNumber = 0;
+		count = 0;
 
 		setter.subscribe(this);
 		// sc = new Scorer(cumulScores,scores,bowlIndex,ball);
@@ -63,6 +67,7 @@ public class Lane extends Thread implements Observer {
 
 		while (true) {
 			if (partyAssigned && !gameFinished) { // we have a party on this lane,
+				Vector members = party.getMembers();
 				// so next bower can take a throw
 
 				while (gameIsHalted) {
@@ -71,9 +76,13 @@ public class Lane extends Thread implements Observer {
 					} catch (Exception e) {
 					}
 				}
-
-				if (bowlerIterator.hasNext()) {
-					currentThrower = (Bowler) bowlerIterator.next();
+				// if (bowlerIterator.hasNext()) {
+				// currentThrower = (Bowler) bowlerIterator.next();
+				if (count < members.size()) {
+					{
+						currentThrower = (Bowler) members.get(count);
+						count++;
+					}
 
 					canThrowAgain = true;
 					tenthFrameStrike = false;
@@ -103,13 +112,15 @@ public class Lane extends Thread implements Observer {
 					frameNumber++;
 					resetBowlerIterator();
 					bowlIndex = 0;
+					// count = 0 ;
 					if (frameNumber > 9) {
 						gameFinished = true;
 						gameNumber++;
 					}
 				}
 			} else if (partyAssigned && gameFinished) {
-				EndGamePrompt egp = new EndGamePrompt(((Bowler) party.getMembers().get(0)).getNickName() + "'s Party");
+				Vector members = party.getMembers();
+				EndGamePrompt egp = new EndGamePrompt(((Bowler) members.get(0)).getNickName() + "'s Party");
 				int result = egp.getResult();
 				egp.destroy();
 				egp = null;
@@ -123,11 +134,10 @@ public class Lane extends Thread implements Observer {
 
 				} else if (result == 2) {// no, dont want to play another game
 					Vector<String> printVector;
-					EndGameReport egr = new EndGameReport(
-							((Bowler) party.getMembers().get(0)).getNickName() + "'s Party", party);
+					EndGameReport egr = new EndGameReport(((Bowler) members.get(0)).getNickName() + "'s Party", party);
 					printVector = egr.getResult();
 					partyAssigned = false;
-					Iterator scoreIt = party.getMembers().iterator();
+					Iterator scoreIt = members.iterator();
 					party = null;
 					partyAssigned = false;
 
@@ -215,6 +225,7 @@ public class Lane extends Thread implements Observer {
 	 * @post the iterator points to the first bowler in the party
 	 */
 	private void resetBowlerIterator() {
+		count = 0;
 		bowlerIterator = (party.getMembers()).iterator();
 	}
 
@@ -254,6 +265,7 @@ public class Lane extends Thread implements Observer {
 	public void assignParty(Party theParty) {
 		party = theParty;
 		resetBowlerIterator();
+		// count = 0;
 		partyAssigned = true;
 
 		curScores = new int[party.getMembers().size()];
@@ -262,6 +274,10 @@ public class Lane extends Thread implements Observer {
 		gameNumber = 0;
 
 		resetScores();
+	}
+
+	public void loadParty() {
+
 	}
 
 	/**
@@ -492,7 +508,7 @@ public class Lane extends Thread implements Observer {
 	 * Pause the execution of this game
 	 */
 
-	public boolean isGameIsHalted(){
+	public boolean isGameIsHalted() {
 		return gameIsHalted;
 	}
 
@@ -509,10 +525,13 @@ public class Lane extends Thread implements Observer {
 		publish(lanePublish());
 	}
 
-	public void save(){
+	public void save() throws IOException {
 		gameIsHalted = true;
 		publish(lanePublish());
 		System.out.println("Ok I'll save");
+		SaveGame sv = new SaveGame();
+		sv.saveGame(party, cumulScores, curScores, finalScores, gameNumber, bowlerIterator);
+
 	}
 
 }

@@ -22,7 +22,7 @@ import java.util.Vector;
 
 public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
-	private JButton addParty, finished, assign, scores;
+	private JButton addParty, finished, assign, scores, load;
 	private JFrame win;
 	private JList<?> partyList;
 
@@ -75,6 +75,13 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		scorePanel.add(scores);
 		controlsPanel.add(scorePanel);
 
+		load = new JButton("Load Last");
+		JPanel loadPanel = new JPanel();
+		loadPanel.setLayout(new FlowLayout());
+		load.addActionListener(this);
+		loadPanel.add(load);
+		controlsPanel.add(loadPanel);
+
 		finished = new JButton("Finished");
 		JPanel finishedPanel = new JPanel();
 		finishedPanel.setLayout(new FlowLayout());
@@ -96,7 +103,8 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 			curLane.subscribe(laneStat);
 			((Pinsetter) curLane.getPinsetter()).subscribe(laneStat);
 			JPanel lanePanel = laneStat.showLane();
-			lanePanel.setBorder(new TitledBorder("Lane" + ++laneCount));
+			++laneCount;
+			lanePanel.setBorder(new TitledBorder("Lane" + laneCount));
 			laneStatusPanel.add(lanePanel);
 		}
 
@@ -168,6 +176,17 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
+		}
+		if(e.getSource().equals(load)){
+			SaveGame sv = new SaveGame();
+			try {
+				sv.loadGames();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			} catch (ClassNotFoundException ex) {
+				ex.printStackTrace();
+			}
+			;
 		}
 	}
 

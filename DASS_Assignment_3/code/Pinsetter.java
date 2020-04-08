@@ -70,10 +70,11 @@
 
  */
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Vector;
 
-public class Pinsetter {
+public class Pinsetter implements Serializable {
 
 	private Random rnd;
 	private Vector<Observer> subscribers;
