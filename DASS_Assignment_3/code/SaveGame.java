@@ -14,7 +14,7 @@ public class SaveGame{
         try{
             File file = new File(SAVE_FILE_DAT);
             boolean append = file.exists();
-            FileOutputStream out = new FileOutputStream(new File(SAVE_FILE_DAT),append);
+            FileOutputStream out = new FileOutputStream(file,append);
             AppendableObjectOutputStream obj = new AppendableObjectOutputStream(out,append);
             obj.writeObject(gameName);
             obj.writeObject(bowlers);
@@ -32,13 +32,30 @@ public class SaveGame{
         }
     }
 
+//    public static void saveGame(SaveData sd)
+//            throws IOException {
+//
+//        try{
+//            File file = new File(SAVE_FILE_DAT);
+//            boolean append = file.exists();
+//            FileOutputStream out = new FileOutputStream(new File(SAVE_FILE_DAT),append);
+//            AppendableObjectOutputStream obj = new AppendableObjectOutputStream(out,append);
+//            obj.writeObject(sd);
+//            obj.close();
+//            out.close();
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
+
     public static void saveGame(SaveData sd)
             throws IOException {
 
         try{
-            File file = new File(SAVE_FILE_DAT);
+            File file = new File(sd.gameName+".DAT");
             boolean append = file.exists();
-            FileOutputStream out = new FileOutputStream(new File(SAVE_FILE_DAT),append);
+            FileOutputStream out = new FileOutputStream(file,append);
             AppendableObjectOutputStream obj = new AppendableObjectOutputStream(out,append);
             obj.writeObject(sd);
             obj.close();
@@ -55,7 +72,7 @@ public class SaveGame{
         SaveData curData = null;
         int fl=0;
         try{
-            FileInputStream is = new FileInputStream(SAVE_FILE_DAT);
+            FileInputStream is = new FileInputStream(gameName+".DAT");
             ObjectInputStream ois = new ObjectInputStream(is);
             try{
                 do {

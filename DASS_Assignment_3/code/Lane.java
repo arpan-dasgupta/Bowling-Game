@@ -28,7 +28,7 @@ public class Lane extends Thread implements Observer, Serializable {
 	private int[][] finalScores;
 	private int gameNumber;
 
-	public boolean isstart;
+	public int isStart;
 	Scorer sc;
 
 	private Bowler currentThrower; // = the thrower who just took a throw
@@ -127,7 +127,6 @@ public class Lane extends Thread implements Observer, Serializable {
 
 				System.out.println("result was: " + result);
 
-				// TODO: send record of scores to control desk
 				if (result == 1) { // yes, want to play again
 					resetScores();
 					resetBowlerIterator();
@@ -216,28 +215,11 @@ public class Lane extends Thread implements Observer, Serializable {
 		} else { // this is not a real throw, probably a reset
 		}
 	}
-
-	/**
-	 * resetBowlerIterator()
-	 * 
-	 * sets the current bower iterator back to the first bowler
-	 * 
-	 * @pre the party as been assigned
-	 * @post the iterator points to the first bowler in the party
-	 */
 	private void resetBowlerIterator() {
 		count = 0;
 		// bowlerIterator = (party.getMembers()).iterator();
 	}
 
-	/**
-	 * resetScores()
-	 * 
-	 * resets the scoring mechanism, must be called before scoring starts
-	 * 
-	 * @pre the party has been assigned
-	 * @post scoring system is initialized
-	 */
 	private void resetScores() {
 
 		for (Object o : party.getMembers()) {
@@ -262,7 +244,7 @@ public class Lane extends Thread implements Observer, Serializable {
 		cumulScores = new int[party.getMembers().size()][10];
 		finalScores = new int[party.getMembers().size()][128];
 		gameNumber = 0;
-		isstart = true;
+		isStart = 0;
 
 		resetScores();
 	}
@@ -285,23 +267,30 @@ public class Lane extends Thread implements Observer, Serializable {
 		currentThrower = sd.current;
 		System.out.println(Arrays.deepToString(cumulScores));
 		System.out.println(bowlIndex);
+		System.out.println(sd.bowlers.getMembers().get(0).getNickName());
+		System.out.println(sd.bowlers.getMembers().get(1).getNickName());
+		System.out.println(sd.scores.toString() + " poo ");
 		gameFinished = false;
 		for (Bowler o : party.getMembers()) {
 			int[] toPut = new int[25];
 			for (int i = 0; i != 25; i++) {
 				toPut[i] = -1;
 			}
+			System.out.println(o.getNickName());
 			scores.put(o, sd.scores.get(o.getNickName()));
 		}
+		System.out.println(scores.toString() + " poo ");
 
 		frameNumber = sd.frame;
-		isstart = true;
+		isStart = 0;
 		partyAssigned = true;
 	}
 
 	LaneEvent lanePublish() {
 		LaneEvent laneEvent = new LaneEvent(party, bowlIndex, currentThrower, cumulScores, scores, frameNumber + 1,
-				curScores, ball, gameIsHalted, isstart);
+				curScores, ball, gameIsHalted, isStart);
+		if(isStart==0)
+			isStart=1;;
 		return laneEvent;
 	}
 
@@ -331,15 +320,19 @@ public class Lane extends Thread implements Observer, Serializable {
 	}
 
 	public void save() throws IOException {
-		System.out.println(bowlIndex);
+//		System.out.println(bowlIndex);
 		gameIsHalted = true;
 		sc.publish(lanePublish());
 		String saveName = JOptionPane.showInputDialog("Enter Name of Save");
 
-		HashMap newh = new HashMap();
+		HashMap<String,Object> newh = new HashMap<String, Object>();
 		for (Bowler o : party.getMembers()) {
+//			System.out.println(o.getNickName());
 			newh.put(o.getNickName(), scores.get(o));
 		}
+//		System.out.println(party.getMembers().get(0).getNickName());
+//		System.out.println(party.getMembers().get(1).getNickName());
+//		System.out.println(newh + " oof ");
 
 		SaveData ss = new SaveData(saveName, party, cumulScores, curScores, finalScores, gameNumber, count, frameNumber,
 				newh, ball, currentThrower, bowlIndex);

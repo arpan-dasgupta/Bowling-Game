@@ -23,11 +23,12 @@ public class Scorer {
         // Iterate through each ball until the current one.
         for (int i = 0; i != current + 2; i++) {
             // Spare:
+            int i1 = i / 2;
             if (i % 2 == 1 && curScore[i - 1] + curScore[i] == 10 && i < current - 1 && i < 19) {
                 // This ball was a the second of a spare.
                 // Also, we're not on the current ball.
                 // Add the next ball to the ith one in cumul.
-                lane.cumulScores[lane.bowlIndex][(i / 2)] += curScore[i + 1] + curScore[i];
+                lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 1] + curScore[i];
                 if (i > 1) {
                     // lane.cumulScores[lane.bowlIndex][i/2] += lane.cumulScores[lane.bowlIndex][i/2
                     // -1];
@@ -49,32 +50,32 @@ public class Scorer {
                 if (strikeballs == 2) {
                     // Add up the strike.
                     // Add the next two balls to the current cumulscore.
-                    lane.cumulScores[lane.bowlIndex][i / 2] += 10;
+                    lane.cumulScores[lane.bowlIndex][i1] += 10;
                     if (curScore[i + 1] != -1) {
-                        lane.cumulScores[lane.bowlIndex][i / 2] += curScore[i + 1]
-                                + lane.cumulScores[lane.bowlIndex][(i / 2) - 1];
+                        lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 1]
+                                + lane.cumulScores[lane.bowlIndex][i1 - 1];
                         if (curScore[i + 2] != -1) {
                             if (curScore[i + 2] != -2) {
-                                lane.cumulScores[lane.bowlIndex][(i / 2)] += curScore[i + 2];
+                                lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 2];
                             }
                         } else {
                             if (curScore[i + 3] != -2) {
-                                lane.cumulScores[lane.bowlIndex][(i / 2)] += curScore[i + 3];
+                                lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 3];
                             }
                         }
                     } else {
-                        if (i / 2 > 0) {
-                            lane.cumulScores[lane.bowlIndex][i / 2] += curScore[i + 2]
-                                    + lane.cumulScores[lane.bowlIndex][(i / 2) - 1];
+                        if (i1 > 0) {
+                            lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 2]
+                                    + lane.cumulScores[lane.bowlIndex][i1 - 1];
                         } else {
-                            lane.cumulScores[lane.bowlIndex][i / 2] += curScore[i + 2];
+                            lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 2];
                         }
                         if (curScore[i + 3] != -1) {
                             if (curScore[i + 3] != -2) {
-                                lane.cumulScores[lane.bowlIndex][(i / 2)] += curScore[i + 3];
+                                lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 3];
                             }
                         } else {
-                            lane.cumulScores[lane.bowlIndex][(i / 2)] += curScore[i + 4];
+                            lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 4];
                         }
                     }
                 } else {
@@ -83,35 +84,35 @@ public class Scorer {
             } else {
                 // We're dealing with a normal throw, add it and be on our way.
                 if (i % 2 == 0 && i < 18) {
-                    if (i / 2 == 0) {
+                    if (i1 == 0) {
                         // First frame, first ball. Set his cumul score to the first ball
                         if (curScore[i] != -2) {
-                            lane.cumulScores[lane.bowlIndex][i / 2] += curScore[i];
+                            lane.cumulScores[lane.bowlIndex][i1] += curScore[i];
                         }
-                    } else if (i / 2 != 9) {
+                    } else if (i1 != 9) {
                         // add his last frame's cumul to this ball, make it this frame's cumul.
                         if (curScore[i] != -2) {
-                            lane.cumulScores[lane.bowlIndex][i / 2] += lane.cumulScores[lane.bowlIndex][i / 2 - 1]
+                            lane.cumulScores[lane.bowlIndex][i1] += lane.cumulScores[lane.bowlIndex][i1 - 1]
                                     + curScore[i];
                         } else {
-                            lane.cumulScores[lane.bowlIndex][i / 2] += lane.cumulScores[lane.bowlIndex][i / 2 - 1];
+                            lane.cumulScores[lane.bowlIndex][i1] += lane.cumulScores[lane.bowlIndex][i1 - 1];
                         }
                     }
                 } else if (i < 18) {
                     if (curScore[i] != -1 && i > 2) {
                         if (curScore[i] != -2) {
-                            lane.cumulScores[lane.bowlIndex][i / 2] += curScore[i];
+                            lane.cumulScores[lane.bowlIndex][i1] += curScore[i];
                         }
                     }
                 }
-                if (i / 2 == 9) {
+                if (i1 == 9) {
                     if (i == 18) {
                         lane.cumulScores[lane.bowlIndex][9] += lane.cumulScores[lane.bowlIndex][8];
                     }
                     if (curScore[i] != -2) {
                         lane.cumulScores[lane.bowlIndex][9] += curScore[i];
                     }
-                } else if (i / 2 == 10) {
+                } else if (i1 == 10) {
                     if (curScore[i] != -2) {
                         lane.cumulScores[lane.bowlIndex][9] += curScore[i];
                     }

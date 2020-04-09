@@ -11,14 +11,14 @@ public class SaveData implements Serializable {
     int gameNumber;
     int count;
     int frame;
-    HashMap scores;
+    HashMap<String,Object> scores;
     int ball;
     Bowler current;
     int bowlIndex;
 //    int real_frame;
 //    Vector<LaneObserver> subscribers;
 
-    public SaveData(String gameName, Party bowlers, int[][] cumulScores, int[] curScores, int[][] finalScores, int gameNumber, int count, int frame, HashMap scores, int ball,Bowler curr, int bowlIndex) {
+    public SaveData(String gameName, Party bowlers, int[][] cumulScores, int[] curScores, int[][] finalScores, int gameNumber, int count, int frame, HashMap<String,Object> scores, int ball,Bowler curr, int bowlIndex) {
         this.gameName = gameName;
         this.bowlers = bowlers;
         this.cumulScores = cumulScores;
