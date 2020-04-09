@@ -67,14 +67,14 @@ public class Lane extends Thread implements Observer, Serializable {
 
 		while (true) {
 			if (partyAssigned && !gameFinished) { // we have a party on this lane,
-				Vector members = party.getMembers();
+				Vector<Bowler> members = party.getMembers();
 				// so next bower can take a throw
 
 				// if (bowlerIterator.hasNext()) {
 				// currentThrower = (Bowler) bowlerIterator.next();
 				if (count < members.size()) {
 
-					currentThrower = (Bowler) members.get(count);
+					currentThrower = members.get(count);
 					count++;
 
 
@@ -119,8 +119,8 @@ public class Lane extends Thread implements Observer, Serializable {
 					}
 				}
 			} else if (partyAssigned && gameFinished) {
-				Vector members = party.getMembers();
-				EndGamePrompt egp = new EndGamePrompt(((Bowler) members.get(0)).getNickName() + "'s Party");
+				Vector<Bowler> members = party.getMembers();
+				EndGamePrompt egp = new EndGamePrompt((members.get(0)).getNickName() + "'s Party");
 				int result = egp.getResult();
 				egp.destroy();
 				egp = null;
@@ -134,10 +134,10 @@ public class Lane extends Thread implements Observer, Serializable {
 
 				} else if (result == 2) {// no, dont want to play another game
 					Vector<String> printVector;
-					EndGameReport egr = new EndGameReport(((Bowler) members.get(0)).getNickName() + "'s Party", party);
+					EndGameReport egr = new EndGameReport((members.get(0)).getNickName() + "'s Party", party);
 					printVector = egr.getResult();
 					partyAssigned = false;
-					Iterator scoreIt = members.iterator();
+					Iterator<Bowler> scoreIt = members.iterator();
 					party = null;
 					partyAssigned = false;
 
@@ -145,7 +145,7 @@ public class Lane extends Thread implements Observer, Serializable {
 
 					int myIndex = 0;
 					while (scoreIt.hasNext()) {
-						Bowler thisBowler = (Bowler) scoreIt.next();
+						Bowler thisBowler = scoreIt.next();
 						ScoreReport sr = new ScoreReport(thisBowler, finalScores[myIndex++], gameNumber);
 						// sr.sendEmail(thisBowler.getEmail());
 						Iterator<String> printIt = printVector.iterator();
@@ -288,9 +288,9 @@ public class Lane extends Thread implements Observer, Serializable {
 		finalScores = sd.finalScores;
 		gameNumber = sd.gameNumber;
 		curScores = sd.curScores;
-		scores = sd.scores;
+//		scores = sd.scores;
 		ball = sd.ball;
-		bowlIndex = sd.bowlIndex;
+		bowlIndex = 0;
 
 		currentThrower = sd.current;
 		System.out.println(Arrays.deepToString(cumulScores));
@@ -305,12 +305,12 @@ public class Lane extends Thread implements Observer, Serializable {
 //			System.out.println(o);
 //			System.out.println(sd.scores.get(o) + " 11 ");
 //		}
-		for (Object o : party.getMembers()) {
+		for (Bowler o : party.getMembers()) {
 			int[] toPut = new int[25];
 			for (int i = 0; i != 25; i++) {
 				toPut[i] = -1;
 			}
-			scores.put(o, sd.scores.get(o));
+			scores.put(o, sd.scores.get(o.getNickName()));
 
 //			System.out.println(o);
 //			System.out.println(sd.scores.get(o) + " 000 ");
@@ -581,14 +581,14 @@ public class Lane extends Thread implements Observer, Serializable {
 //		System.out.println(Arrays.deepToString(cumulScores));
 //		System.out.println(scores.toString() + " scores ");
 
-//		HashMap newh = new HashMap();
-//		for (Bowler o: party.getMembers()){
-////			System.out.println(o);
-////			System.out.println(scores.get(o) + " 33 ");
-//			newh.put(o.getNickName(),scores.get(o));
-//		}
-		
-		SaveData ss = new SaveData(saveName,party, cumulScores, curScores, finalScores, gameNumber, count, frameNumber,scores,ball,currentThrower,bowlIndex);
+		HashMap newh = new HashMap();
+		for (Bowler o: party.getMembers()){
+//			System.out.println(o);
+//			System.out.println(scores.get(o) + " 33 ");
+			newh.put(o.getNickName(),scores.get(o));
+		}
+
+		SaveData ss = new SaveData(saveName,party, cumulScores, curScores, finalScores, gameNumber, count, frameNumber,newh,ball,currentThrower,bowlIndex);
 		System.out.println("Ok I'll save");
 		SaveGame.saveGame(ss);
 //		SaveGame.saveGame(saveName,party.getMembers(), cumulScores, curScores, finalScores, gameNumber, count, frameNumber);
