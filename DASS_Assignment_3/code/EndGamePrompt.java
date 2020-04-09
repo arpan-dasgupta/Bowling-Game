@@ -6,7 +6,7 @@
   Window>Preferences>Java>Code Generation.
  */
 
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,7 +77,7 @@ public class EndGamePrompt implements ActionListener {
 		return (size.height) / 2;
 	}
 
-	@NotNull
+//	@NotNull
 	private JPanel buttonjPanel() {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2));

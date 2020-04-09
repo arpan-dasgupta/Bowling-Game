@@ -6,7 +6,7 @@
   Window>Preferences>Java>Code Generation.
  */
 
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -92,7 +92,7 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		return (size.height) / 2;
 	}
 
-	@NotNull
+//	@NotNull
 	private JPanel memberPanel(Party party) {
 		JPanel partyPanel = new JPanel();
 		partyPanel.setLayout(new FlowLayout());
