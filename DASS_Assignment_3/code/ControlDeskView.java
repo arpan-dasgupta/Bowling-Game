@@ -178,10 +178,11 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 			}
 		}
 		if(e.getSource().equals(load)){
-			SaveGame sv = new SaveGame();
+//			SaveGame sv = new SaveGame();
 			String name = JOptionPane.showInputDialog("Enter name of saved game?");
 			try {
-				sv.loadGames(name);
+//				sv.loadGames(name);
+				controlDesk.assignLane(name);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			} catch (ClassNotFoundException ex) {

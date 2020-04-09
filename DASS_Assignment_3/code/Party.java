@@ -28,7 +28,7 @@ import java.util.*;
 public class Party implements Serializable {
 
 	/** Vector of bowlers in this party */	
-    private Vector myBowlers;
+    private Vector<? extends Bowler> myBowlers;
 	
 	/**
 	 * Constructor for a Party
@@ -36,8 +36,8 @@ public class Party implements Serializable {
 	 * @param bowlers	Vector of bowlers that are in this party
 	 */
 		
-    public Party( Vector bowlers ) {
-		myBowlers = new Vector(bowlers);
+    public Party(Vector<? extends Bowler> bowlers ) {
+		myBowlers = new Vector<Bowler>(bowlers);
     }
 
 	/**
@@ -46,8 +46,8 @@ public class Party implements Serializable {
 	 * @return 	A vector of the bowlers in this party
 	 */
 
-    public Vector getMembers() {
-		return (Vector) myBowlers.clone();
+    public Vector<Bowler> getMembers() {
+		return (Vector<Bowler>) myBowlers.clone();
     }
 
 }

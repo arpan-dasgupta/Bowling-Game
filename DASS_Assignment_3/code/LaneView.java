@@ -6,9 +6,10 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.*;
 
-public class LaneView implements LaneObserver, ActionListener {
+public class LaneView implements LaneObserver, ActionListener, Serializable {
 
 	private int roll;
 	private boolean initDone = true;
@@ -128,7 +129,7 @@ public class LaneView implements LaneObserver, ActionListener {
 				}
 			}
 
-			if (le.getFrameNum() == 1 && le.getBall() == 0 && le.getIndex() == 0) {
+			if (le.isstart) {
 				System.out.println("Making the frame.");
 				cpanel.removeAll();
 				cpanel.add(makeFrame(le.getParty()), "Center");
@@ -150,14 +151,16 @@ public class LaneView implements LaneObserver, ActionListener {
 				cpanel.add(buttonPanel, "South");
 
 				frame.pack();
-
+				le.isstart = false;
 			}
 
 			int[][] lescores = le.getCumulScore();
 			for (int k = 0; k < numBowlers; k++) {
 				for (int i = 0; i <= le.getFrameNum() - 1; i++) {
-					if (lescores[k][i] != 0)
+					if (lescores[k][i] != 0) {
+						// System.out.println(k+" "+i+" ");
 						scoreLabel[k][i].setText((new Integer(lescores[k][i])).toString());
+					}
 				}
 				for (int i = 0; i < 21; i++) {
 					if (((int[]) ((HashMap) le.getScore()).get(bowlers.get(k)))[i] != -1)

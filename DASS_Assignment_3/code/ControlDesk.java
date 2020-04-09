@@ -132,6 +132,22 @@ class ControlDesk extends Thread {
 		publish(new ControlDeskEvent(getPartyQueue()));
 	}
 
+	public void assignLane(String gameName) throws IOException, ClassNotFoundException {
+		Iterator<Lane> it = lanes.iterator();
+
+		while (it.hasNext()) {
+			Lane curLane = it.next();
+
+			if (!curLane.isPartyAssigned()) {
+				System.out.println("ok... assigning this party");
+//				curLane.assignParty((partyQueue.next()));
+				curLane.loadParty(gameName);
+				break;
+			}
+		}
+		publish(new ControlDeskEvent(getPartyQueue()));
+	}
+
 	/**
 	 */
 

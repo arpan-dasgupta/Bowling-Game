@@ -147,6 +147,7 @@ public class SaveGame {
             throws IOException, ClassNotFoundException {
         Vector<Score> scores = new Vector<>();
         SaveData curData = null;
+        int fl=0;
         try{
             FileInputStream is = new FileInputStream(SAVE_FILE_DAT);
             ObjectInputStream ois = new ObjectInputStream(is);
@@ -157,14 +158,18 @@ public class SaveGame {
                 }while (!gameName.equals(curData.gameName));
             }catch (Exception e){
 //                e.printStackTrace();
+//                throw e;
+                fl=1;
                 System.out.println("Not found!");
             }
             ois.close();
             is.close();
         }
         catch (Exception e){
+            fl=1;
             e.printStackTrace();
         }
+        if (fl==1) return null;
         return curData;
     }
 }

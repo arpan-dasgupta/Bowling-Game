@@ -35,9 +35,10 @@ public class LaneEvent {
 	private final int index;
 	private final int frameNum;
 	private final boolean mechProb;
+	public boolean isstart = false;
 
 	public LaneEvent(Party pty, int theIndex, Bowler theBowler, int[][] theCumulScore, HashMap theScore,
-			int theFrameNum, int[] theCurScores, int theBall, boolean mechProblem) {
+			int theFrameNum, int[] theCurScores, int theBall, boolean mechProblem, boolean isstart) {
 		p = pty;
 		index = theIndex;
 		bowler = theBowler;
@@ -46,6 +47,7 @@ public class LaneEvent {
 		frameNum = theFrameNum;
 		ball = theBall;
 		mechProb = mechProblem;
+		this.isstart = isstart;
 	}
 
 	public boolean isMechanicalProblem() {

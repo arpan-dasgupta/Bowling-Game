@@ -14,13 +14,13 @@ import java.io.IOException;
 
 public class LaneStatusView implements ActionListener, LaneObserver, Observer {
 
-	private final JPanel jp;
+	transient private final JPanel jp;
 
-	private final JLabel curBowler;
-	private final JLabel pinsDown;
-	private final JButton viewLane;
-	private final JButton viewPinSetter, maintenance;
-	private final JButton pause, save;
+	transient final JLabel curBowler;
+	transient private final JLabel pinsDown;
+	transient private final JButton viewLane;
+	transient private final JButton viewPinSetter, maintenance;
+	transient private final JButton pause, save;
 
 	private final PinSetterView psv;
 	private final LaneView lv;
