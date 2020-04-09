@@ -31,16 +31,11 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
 	private ControlDesk controlDesk;
 
-	/**
-	 * Displays a GUI representation of the ControlDesk
-	 *
-	 */
-
 	public ControlDeskView(ControlDesk controlDesk, int maxMembers) {
 
 		this.controlDesk = controlDesk;
 		this.maxMembers = maxMembers;
-		int numLanes = controlDesk.getNumLanes();
+		int numLanes = controlDesk.numLanes;
 
 		win = new JFrame("Control Desk");
 		win.getContentPane().setLayout(new BorderLayout());
