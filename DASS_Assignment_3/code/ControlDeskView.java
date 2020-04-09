@@ -100,7 +100,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		while (it.hasNext()) {
 			Lane curLane = it.next();
 			LaneStatusView laneStat = new LaneStatusView(curLane, (laneCount + 1));
-			curLane.subscribe(laneStat);
+			curLane.sc.subscribe(laneStat);
 			((Pinsetter) curLane.getPinsetter()).subscribe(laneStat);
 			JPanel lanePanel = laneStat.showLane();
 			++laneCount;
@@ -135,20 +135,9 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 				System.exit(0);
 			}
 		});
-//		win.getContentPane().add("Center", colPanel);
-//
-//		win.pack();
-//
-//
-//		// Center Window on Screen
-//		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-//		win.setLocation(((screenSize.width) / 2) - ((win.getSize().width) / 2),
-//				((screenSize.height) / 2) - ((win.getSize().height) / 2));
-//		win.show();
 
 		Drawer d = new Drawer();
-		d.windowPos(colPanel,win);
-
+		d.windowPos(colPanel, win);
 
 	}
 
@@ -170,18 +159,19 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 			win.setVisible(false);
 			System.exit(0);
 		}
-		if(e.getSource().equals(scores)){
+		if (e.getSource().equals(scores)) {
 			try {
 				new ScoreQueryView();
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
 		}
-		if(e.getSource().equals(load)){
-//			SaveGame sv = new SaveGame();
+		if (e.getSource().equals(load)) {
+			// SaveGame sv = new SaveGame();
+
 			String name = JOptionPane.showInputDialog("Enter name of saved game?");
 			try {
-//				sv.loadGames(name);
+				// sv.loadGames(name);
 				controlDesk.assignLane(name);
 			} catch (IOException ex) {
 				ex.printStackTrace();
@@ -192,23 +182,9 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		}
 	}
 
-	/**
-	 * Receive a new party from andPartyView.
-	 *
-	 * @param addPartyView the AddPartyView that is providing a new party
-	 *
-	 */
-
 	public void updateAddParty(AddPartyView addPartyView) {
 		controlDesk.addPartyQueue(addPartyView.getParty());
 	}
-
-	/**
-	 * Receive a broadcast from a ControlDesk
-	 *
-	 * @param ce the ControlDeskEvent that triggered the handler
-	 *
-	 */
 
 	public void receiveControlDeskEvent(ControlDeskEvent ce) {
 		partyList.setListData(ce.getPartyQueue());

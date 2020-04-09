@@ -154,7 +154,7 @@ public class LaneView implements LaneObserver, ActionListener, Serializable {
 				le.isstart = false;
 			}
 
-			int[][] lescores = le.getCumulScore();
+			int[][] lescores = le.cumulScore;
 			for (int k = 0; k < numBowlers; k++) {
 				for (int i = 0; i <= le.getFrameNum() - 1; i++) {
 					if (lescores[k][i] != 0) {

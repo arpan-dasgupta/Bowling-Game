@@ -27,6 +27,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Vector;
 
 /**
@@ -128,18 +129,10 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 		finished.addActionListener(this);
 		finishedPanel.add(finished);
 
-		buttonPanel.add(addPatronPanel);
-		buttonPanel.add(remPatronPanel);
-		buttonPanel.add(newPatronPanel);
-		buttonPanel.add(finishedPanel);
-
-		// Clean up main panel
-		colPanel.add(partyPanel);
-		colPanel.add(bowlerPanel);
-		colPanel.add(buttonPanel);
-
 		Drawer d = new Drawer();
-		d.windowPos(colPanel,win);
+		d.addPartyPanels(colPanel, partyPanel, bowlerPanel, buttonPanel, addPatronPanel, remPatronPanel, newPatronPanel,
+				finishedPanel);
+		d.windowPos(colPanel, win);
 
 	}
 
