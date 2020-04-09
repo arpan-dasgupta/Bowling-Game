@@ -179,7 +179,7 @@ public class Lane extends Thread implements Observer, Serializable {
 	public void receivePinsetterEvent(PinsetterEvent pe) {
 
 		if (pe.pinsDownOnThisThrow() >= 0) { // this is a real throw
-			System.out.println(pe.getThrowNumber() + " + ");
+			// System.out.println(pe.getThrowNumber() + " + ");
 			sc.markScore(currentThrower, frameNumber + 1, pe.getThrowNumber(), pe.pinsDownOnThisThrow());
 
 			// next logic handles the ?: what conditions dont allow them another throw?
@@ -215,6 +215,7 @@ public class Lane extends Thread implements Observer, Serializable {
 		} else { // this is not a real throw, probably a reset
 		}
 	}
+
 	private void resetBowlerIterator() {
 		count = 0;
 		// bowlerIterator = (party.getMembers()).iterator();
@@ -265,21 +266,21 @@ public class Lane extends Thread implements Observer, Serializable {
 		bowlIndex = 0;
 
 		currentThrower = sd.current;
-		System.out.println(Arrays.deepToString(cumulScores));
-		System.out.println(bowlIndex);
-		System.out.println(sd.bowlers.getMembers().get(0).getNickName());
-		System.out.println(sd.bowlers.getMembers().get(1).getNickName());
-		System.out.println(sd.scores.toString() + " poo ");
+		// System.out.println(Arrays.deepToString(cumulScores));
+		// System.out.println(bowlIndex);
+		// System.out.println(sd.bowlers.getMembers().get(0).getNickName());
+		// System.out.println(sd.bowlers.getMembers().get(1).getNickName());
+		// System.out.println(sd.scores.toString() + " poo ");
 		gameFinished = false;
 		for (Bowler o : party.getMembers()) {
 			int[] toPut = new int[25];
 			for (int i = 0; i != 25; i++) {
 				toPut[i] = -1;
 			}
-			System.out.println(o.getNickName());
+			// System.out.println(o.getNickName());
 			scores.put(o, sd.scores.get(o.getNickName()));
 		}
-		System.out.println(scores.toString() + " poo ");
+		// System.out.println(scores.toString() + " poo ");
 
 		frameNumber = sd.frame;
 		isStart = 0;
@@ -289,8 +290,9 @@ public class Lane extends Thread implements Observer, Serializable {
 	LaneEvent lanePublish() {
 		LaneEvent laneEvent = new LaneEvent(party, bowlIndex, currentThrower, cumulScores, scores, frameNumber + 1,
 				curScores, ball, gameIsHalted, isStart);
-		if(isStart==0)
-			isStart=1;;
+		if (isStart == 0)
+			isStart = 1;
+		;
 		return laneEvent;
 	}
 
@@ -320,19 +322,19 @@ public class Lane extends Thread implements Observer, Serializable {
 	}
 
 	public void save() throws IOException {
-//		System.out.println(bowlIndex);
+		// System.out.println(bowlIndex);
 		gameIsHalted = true;
 		sc.publish(lanePublish());
 		String saveName = JOptionPane.showInputDialog("Enter Name of Save");
 
-		HashMap<String,Object> newh = new HashMap<String, Object>();
+		HashMap<String, Object> newh = new HashMap<String, Object>();
 		for (Bowler o : party.getMembers()) {
-//			System.out.println(o.getNickName());
+			// System.out.println(o.getNickName());
 			newh.put(o.getNickName(), scores.get(o));
 		}
-//		System.out.println(party.getMembers().get(0).getNickName());
-//		System.out.println(party.getMembers().get(1).getNickName());
-//		System.out.println(newh + " oof ");
+		// System.out.println(party.getMembers().get(0).getNickName());
+		// System.out.println(party.getMembers().get(1).getNickName());
+		// System.out.println(newh + " oof ");
 
 		SaveData ss = new SaveData(saveName, party, cumulScores, curScores, finalScores, gameNumber, count, frameNumber,
 				newh, ball, currentThrower, bowlIndex);

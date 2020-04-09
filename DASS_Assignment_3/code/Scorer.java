@@ -48,7 +48,8 @@ public class Scorer {
                         strikeballs = 2;
                     }
                 }
-                if (addStrikes(curScore, strikeballs, i, i1, i2)) break;
+                if (addStrikes(curScore, strikeballs, i, i1, i2))
+                    break;
             } else {
                 normalThrow(curScore, i, i1);
             }
@@ -62,8 +63,7 @@ public class Scorer {
             // Add the next two balls to the current cumulscore.
             lane.cumulScores[lane.bowlIndex][i1] += 10;
             if (i2 != -1) {
-                lane.cumulScores[lane.bowlIndex][i1] += i2
-                        + lane.cumulScores[lane.bowlIndex][i1 - 1];
+                lane.cumulScores[lane.bowlIndex][i1] += i2 + lane.cumulScores[lane.bowlIndex][i1 - 1];
                 if (curScore[i + 2] != -1) {
                     if (curScore[i + 2] != -2) {
                         lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 2];
@@ -75,8 +75,7 @@ public class Scorer {
                 }
             } else {
                 if (i1 > 0) {
-                    lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 2]
-                            + lane.cumulScores[lane.bowlIndex][i1 - 1];
+                    lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 2] + lane.cumulScores[lane.bowlIndex][i1 - 1];
                 } else {
                     lane.cumulScores[lane.bowlIndex][i1] += curScore[i + 2];
                 }
@@ -105,8 +104,7 @@ public class Scorer {
             } else if (i1 != 9) {
                 // add his last frame's cumul to this ball, make it this frame's cumul.
                 if (curScore[i] != -2) {
-                    lane.cumulScores[lane.bowlIndex][i1] += lane.cumulScores[lane.bowlIndex][i1 - 1]
-                            + curScore[i];
+                    lane.cumulScores[lane.bowlIndex][i1] += lane.cumulScores[lane.bowlIndex][i1 - 1] + curScore[i];
                 } else {
                     lane.cumulScores[lane.bowlIndex][i1] += lane.cumulScores[lane.bowlIndex][i1 - 1];
                 }
@@ -156,7 +154,7 @@ public class Scorer {
         curScore = (int[]) lane.scores.get(Cur);
         curScore[index - 1] = score;
         lane.scores.put(Cur, curScore);
-        System.out.println(Arrays.deepToString(lane.cumulScores));
+        // System.out.println(Arrays.deepToString(lane.cumulScores));
         getScore(Cur, frame);
         publish(lane.lanePublish());
     }

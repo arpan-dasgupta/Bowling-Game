@@ -129,7 +129,7 @@ public class LaneView implements LaneObserver, ActionListener, Serializable {
 				}
 			}
 
-			if (le.isStart==0) {
+			if (le.isStart == 0) {
 				System.out.println("Making the frame.");
 				cpanel.removeAll();
 				cpanel.add(makeFrame(le.getParty()), "Center");
@@ -163,8 +163,8 @@ public class LaneView implements LaneObserver, ActionListener, Serializable {
 					}
 				}
 				for (int i = 0; i < 21; i++) {
-					System.out.println(k+ " "+ i);
-					System.out.println(le.getScore().toString());
+					// System.out.println(k+ " "+ i);
+					// System.out.println(le.getScore().toString());
 					if (((int[]) ((HashMap) le.getScore()).get(bowlers.get(k)))[i] != -1)
 						if (((int[]) ((HashMap) le.getScore()).get(bowlers.get(k)))[i] == 10 && (i % 2 == 0 || i == 19))
 							ballLabel[k][i].setText("X");
