@@ -10,7 +10,7 @@ import java.util.Vector;
 
 public class ScoreQueryView implements ListSelectionListener, ActionListener {
     private JFrame win;
-    private JPanel scoreDisplayPanel,colPanel;
+    private JPanel scoreDisplayPanel, colPanel;
     private JButton showScore, newPatron, showBest, finished;
     private JList<String> partyList;
     private JList<Object> allBowlers;
@@ -18,10 +18,10 @@ public class ScoreQueryView implements ListSelectionListener, ActionListener {
     private Vector<Object> bowlerDB;
     private TextArea text;
 
-
     private ControlDeskView controlDesk;
 
     private String selectedNick, selectedMember;
+
     public ScoreQueryView() throws IOException {
 
         win = new JFrame("Add Party");
@@ -36,15 +36,15 @@ public class ScoreQueryView implements ListSelectionListener, ActionListener {
         text = new TextArea("Nothing Selected\n NO");
         scoreDisplayPanel.add(text);
 
-//        scoreDisplayPanel.setBorder(new TitledBorder("Player Stats"));
-//        final JLabel cLabel1 = new JLabel("Player Name: \n");
-//        scoreDisplayPanel.add(cLabel1);
-//        final JLabel cLabel2 = new JLabel("Max Score: \n");
-//        scoreDisplayPanel.add(cLabel2);
-//        final JLabel cLabel3 = new JLabel("Average Score: \n");
-//        scoreDisplayPanel.add(cLabel3);
-//        final JLabel cLabel4 = new JLabel("Now Bowling: ");
-//        scoreDisplayPanel.add(cLabel4);
+        // scoreDisplayPanel.setBorder(new TitledBorder("Player Stats"));
+        // final JLabel cLabel1 = new JLabel("Player Name: \n");
+        // scoreDisplayPanel.add(cLabel1);
+        // final JLabel cLabel2 = new JLabel("Max Score: \n");
+        // scoreDisplayPanel.add(cLabel2);
+        // final JLabel cLabel3 = new JLabel("Average Score: \n");
+        // scoreDisplayPanel.add(cLabel3);
+        // final JLabel cLabel4 = new JLabel("Now Bowling: ");
+        // scoreDisplayPanel.add(cLabel4);
 
         // Bowler Database
         JPanel bowlerPanel = new JPanel();
@@ -99,7 +99,7 @@ public class ScoreQueryView implements ListSelectionListener, ActionListener {
         colPanel.add(buttonPanel);
 
         Drawer d = new Drawer();
-        d.windowPos(colPanel,win);
+        d.windowPos(colPanel, win);
 
     }
 
@@ -109,26 +109,37 @@ public class ScoreQueryView implements ListSelectionListener, ActionListener {
             try {
                 scc = ScoreHistoryFile.getScores(selectedNick);
             } catch (IOException ex) {
-                ex.printStackTrace();
-//                System.out.println("No player selected");
+                // ex.printStackTrace();
+                // System.out.println("No player selected");
                 return;
             }
             int sum = 0;
+            Vector<String> lastfive = new Vector<>();
             int maxScore = 0;
             int numGames = 0;
-            for (Score curr: scc){
+            int minScore = Integer.MAX_VALUE;
+            int ctr = 0;
+            int maxsiz = scc.size();
+            for (Score curr : scc) {
                 int cs = Integer.parseInt(curr.getScore());
                 sum += cs;
                 numGames++;
-                if( cs> maxScore){
+                if (cs > maxScore) {
                     maxScore = cs;
                 }
+                if (cs < minScore) {
+                    minScore = cs;
+                }
+                ctr++;
+                if (ctr >= maxsiz - 5)
+                    lastfive.add(curr.toString() + '\n');
             }
-//            System.out.println(sum/numGames);
-//            System.out.println(maxScore);
-            text.setText("Average - "+ sum/numGames  + "\nMaximum Score - "+maxScore);
+            // System.out.println(sum/numGames);
+            // System.out.println(maxScore);
+            text.setText("Average - " + sum / numGames + "\nMaximum Score - " + maxScore + "\nMinimum Score - "
+                    + minScore + "\nScores in last few games - " + lastfive.toString());
         }
-        if(e.getSource().equals(showBest)){
+        if (e.getSource().equals(showBest)) {
             showBestHandler();
         }
         if (e.getSource().equals(finished)) {
@@ -143,33 +154,39 @@ public class ScoreQueryView implements ListSelectionListener, ActionListener {
             System.err.println("File Error");
             bowlerDB = new Vector();
         }
+        String bottomScorer = "";
         String topScorer = "";
         int maxScore = 0;
-        for (Object sc :
-                bowlerDB) {
+        int minScore = Integer.MAX_VALUE;
+        for (Object sc : bowlerDB) {
             Vector<Score> scc = null;
             try {
                 scc = ScoreHistoryFile.getScores(sc.toString());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-//                System.out.println(scc.toString());
-            for (Score curr: scc){
+            // System.out.println(scc.toString());
+            for (Score curr : scc) {
                 int cs = Integer.parseInt(curr.getScore());
-                if( cs> maxScore){
+                if (cs > maxScore) {
                     maxScore = cs;
                     topScorer = curr.getNickName();
                 }
+                if (cs < minScore) {
+                    minScore = cs;
+                    bottomScorer = curr.getNickName();
+                }
             }
         }
-//            System.out.println(topScorer);
-//            System.out.println(maxScore);
-        text.setText("Top Scorer - "+ topScorer+"\nMax Score - "+maxScore);
+        // System.out.println(topScorer);
+        // System.out.println(maxScore);
+        text.setText("Top Scorer - " + topScorer + "\nMax Score - " + maxScore + "\nLowest Scorer - " + bottomScorer
+                + "\nMin Score - " + minScore);
     }
 
     @Override
     public void valueChanged(ListSelectionEvent listSelectionEvent) {
-        if (listSelectionEvent.getSource().equals(allBowlers)){
+        if (listSelectionEvent.getSource().equals(allBowlers)) {
             selectedNick = ((String) ((JList) listSelectionEvent.getSource()).getSelectedValue());
         }
     }
