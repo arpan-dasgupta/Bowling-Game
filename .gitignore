@@ -23,6 +23,6 @@
 hs_err_pid*
 
 .codemr
-codemr
-.idea
-.metadata
+codemr/*
+.idea/*
+.metadata/*
